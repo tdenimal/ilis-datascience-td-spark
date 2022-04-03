@@ -9,7 +9,12 @@ Follow the instructions in [https://github.com/Kaggle/kaggle-api](https://github
 
 After kaggle API installation, retrieve the kaggle.json file from your profile in kaggle :
 
-![get_kaggle_json](../assets/get_kaggle_json.png?raw=true)
+Connect to kaggle and get to account part:
+
+![kaggle_account.png](../assets/kaggle_account.png?raw=true)
+
+Get kaggle.json :
+![get_kaggle_json.png](../assets/get_kaggle_json.png?raw=true)
 
 Then copy it in the location ~/.kaggle/kaggle.json. You can get easy access to the directory using this method in WSL:
 
