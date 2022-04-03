@@ -1,0 +1,23 @@
+#version: '3.7'
+# How to use :
+# > docker-compose build s_and_op_ml_dev
+# > docker-compose run -p 8888:8888  s_and_op_ml_dev
+
+# > docker-compose build s_and_op_ml_eng
+# > docker-compose run s_and_op_ml_eng 
+
+# If you want to set environment variables with run :
+# > docker compose run -e ENV=dev -e STEP=gen_dataset -e MODEL_NAME=test s_and_op_ml_eng
+
+services:
+  spark:
+    image: spark_ilis_td1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    volumes:
+      - ~/.config:/root/.config
+      

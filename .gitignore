@@ -1,0 +1,26 @@
+# prune large input data and results folders where ever they occur
+data/*.*
+
+# Exclude document types that don't need versioning,
+# leaving only the types of interest
+*~
+*#
+*.csv
+*.doc
+*.docx
+*.gif
+*.htm
+*.html
+*.ini
+*.jpg
+*.odt
+*.pdf
+*.png
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+*.xlsm
+*.xml
+*.rar
+*.zip
