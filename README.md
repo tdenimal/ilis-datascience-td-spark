@@ -6,25 +6,101 @@ TD Spark pour Master Ingénierie de la santé - Parcours datascience
 
 ### 1.1 - Build docker container
 
+There is 2 docker containers
+
+Dev : includes all the necessary to run notebooks, generate graphs etc
+Run : only necessary dependencies to run the task
+
+Build dev container:
+```bash
+docker-compose build sparkdata_dev
+```
+Build run container:
+```bash
+docker-compose build sparkdata_run
+```
+
 ### 1.2 - Explanations 
 
+This task convert DICOM files to PNG images using PYDICOM and spark.
+
+Run dev env to get a jupyter lab using:
+```bash
+docker-compose run -p 8888:8888  sparkdata_dev
+```
+
+
 ### 1.3 - Run Spark job
+
+```bash
+docker-compose run sparkdata_run
+```
+
 
 ## STEP 2 - Train DL model using BigDL and SPARK
 
 ### 2.1 - Build docker container
 
+Dev : includes all the necessary to run notebooks, generate graphs etc
+Run : only necessary dependencies to run the task
+
+Build dev container:
+```bash
+docker-compose build sparkml_dev
+```
+Build run container:
+```bash
+docker-compose build sparkml_run
+```
+
 ### 2.2 - Explanations 
 
-### 2.3 - Run API and test
+This task train a dummy CNN model using BigDL library on Spark.
+
+Next : Train a model using GCP Dataproc on 100k images (available in a bucket) -
+Use a pre-trained model on imagenet - Resnet50 avilable for bigDL.
+
+Put the notebook content into script, and change the Dockerfile for sparkml_run service to run as a job ( Like in STEP 1)
+
+Run dev env to get a jupyter lab using:
+```bash
+docker-compose run -p 8888:8888  sparkml_dev
+```
+
+### 2.3 - Run  train on spark
+
+```bash
+docker-compose run  sparkml_run
+```
+
 
 ## STEP 3 - API to expose model
 
 ### 3.1 - Build docker container
 
+Dev : includes all the necessary to run notebooks, generate graphs etc
+Run : only necessary dependencies to run the task
+
+Build dev container:
+```bash
+docker-compose build sparkapi_dev
+```
+
+
+Build run container:
+```bash
+docker-compose build sparkapi_run
+```
+
 ### 3.2 - Explanations 
 
+Use the previously trained model and streamlit to create an API to serve predictions on test images. 
+
 ### 3.3 - Run API and test
+
+```bash
+docker-compose run -p 8080:8080 sparkapi_run
+```
 
 ## ANNEXE
 Retrieve the dataset containing Xrays from Kaggle:

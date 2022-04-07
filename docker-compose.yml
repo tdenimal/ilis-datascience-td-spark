@@ -24,17 +24,17 @@ services:
       - ./data:/opt/application/data
     ports:
       - 8888:8888
-    command: /bin/bash
+    command: jupyter lab --allow-root --ip 0.0.0.0
   sparkdata_run:
     image: sparkdata_ilis_td_run
     build:
       context: .
-      dockerfile: ./2_spark_mltrain/Dockerfile
+      dockerfile: ./1_spark_datapipeline/Dockerfile
     volumes:
       - ~/.config:/root/.config
       - ./1_spark_datapipeline/spark:/opt/application/spark
       - ./data:/opt/application/data
-    command: jupyter lab --allow-root --ip 0.0.0.0
+
 
 
   sparkml_dev:
