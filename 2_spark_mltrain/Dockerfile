@@ -7,7 +7,8 @@ WORKDIR /opt/application
 USER root
 #Install package dependencies
 RUN apt-get update
-RUN apt-get -y install gcc g++ libjpeg62-turbo-dev
+RUN apt-get -y install gcc g++ libjpeg62-turbo-dev libffi-dev
+RUN pip install --upgrade pip
 
 USER 185
 #copy src files including spark jobs, requirements.txt

@@ -7,7 +7,8 @@ WORKDIR /opt/application/web
 USER root
 #Install package dependencies
 RUN apt-get update
-RUN apt-get -y install gcc g++ libjpeg62-turbo-dev
+RUN apt-get -y install gcc g++ libjpeg62-turbo-dev libffi-dev
+RUN pip install --upgrade pip
 
 USER 185
 #copy src files including spark jobs, requirements.txt
@@ -24,4 +25,5 @@ RUN pex --inherit-path=prefer --python=python3.8 -r /opt/application/requirement
 #Run spark job
 #Env variable PEX_ROOT for base directory for pex
 #PEX_INHERIT_PATH : pex inherits of current env, to get pyspark dependencies for ex.
-CMD /bin/bash
+#CMD /bin/bash
+#CMD streamlit run ./app.py --server.port 8080 --server.address 0.0.0.0
