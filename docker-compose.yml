@@ -1,0 +1,94 @@
+#version: '3.7'
+# How to use :
+# > docker-compose build s_and_op_ml_dev
+# > docker-compose run -p 8888:8888  s_and_op_ml_dev
+
+# > docker-compose build s_and_op_ml_eng
+# > docker-compose run s_and_op_ml_eng 
+
+# If you want to set environment variables with run :
+# > docker compose run -e ENV=dev -e STEP=gen_dataset -e MODEL_NAME=test s_and_op_ml_eng
+
+services:
+  sparkdata_dev:
+    image: sparkdata_ilis_td_dev
+    build:
+      context: .
+      dockerfile: ./1_spark_datapipeline/Dockerfile-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ~/.config:/root/.config
+      - ./1_spark_datapipeline/notebooks:/opt/application/notebooks
+      - ./1_spark_datapipeline/spark:/opt/application/spark
+      - ./data:/opt/application/data
+    ports:
+      - 8888:8888
+    command: /bin/bash
+  sparkdata_run:
+    image: sparkdata_ilis_td_run
+    build:
+      context: .
+      dockerfile: ./2_spark_mltrain/Dockerfile
+    volumes:
+      - ~/.config:/root/.config
+      - ./1_spark_datapipeline/spark:/opt/application/spark
+      - ./data:/opt/application/data
+    command: /bin/bash 
+
+
+  sparkml_dev:
+    image: sparkml_ilis_td_dev
+    build:
+      context: .
+      dockerfile: ./2_spark_mltrain/Dockerfile-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ~/.config:/root/.config
+      - ./2_spark_mltrain/notebooks:/opt/application/notebooks
+      - ./2_spark_mltrain/spark:/opt/application/spark
+      - ./data:/opt/application/data
+    ports:
+      - 8888:8888
+    command: /bin/bash
+  sparkml_run:
+    image: sparkml_ilis_td_run
+    build:
+      context: .
+      dockerfile: ./2_spark_mltrain/Dockerfile
+    volumes:
+      - ~/.config:/root/.config
+      - ./2_spark_mltrain/notebooks:/opt/application/notebooks
+      - ./2_spark_mltrain/spark:/opt/application/spark
+      - ./data:/opt/application/data
+    command: /bin/bash 
+
+
+  sparkapi_dev:
+    image: sparkapi_ilis_td_dev
+    build:
+      context: .
+      dockerfile: ./3_spark_api/Dockerfile-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ~/.config:/root/.config
+      - ./3_spark_api/web:/opt/application/web
+      - ./3_spark_api/notebooks:/opt/application/notebooks
+      - ./data:/opt/application/data
+    ports:
+      - 8888:8888
+    command: /bin/bash
+  sparkapi_run:
+    image: sparkapi_ilis_td_run
+    build:
+      context: .
+      dockerfile: ./3_spark_api/Dockerfile
+    volumes:
+      - ~/.config:/root/.config
+      - ./3_spark_api/web:/opt/application/web
+      - ./data:/opt/application/data
+    command: /bin/bash
+    ports:
+      - 8080:8080

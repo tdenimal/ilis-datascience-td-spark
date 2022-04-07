@@ -1,0 +1,12 @@
+#Spark only
+pillow==9.1.0
+numpy==1.21.5
+jupyterlab==3.3.2
+matplotlib==3.4.3
+
+
+#ML train
+bigdl-dllib-spark3==2.0.0
+
+#ML inference with API
+streamlit==1.8.1

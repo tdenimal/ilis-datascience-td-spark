@@ -1,0 +1,20 @@
+FROM datamechanics/spark:3.2-latest
+
+ENV PYSPARK_MAJOR_PYTHON_VERSION=3
+ENV SPARK_DRIVER_MEMORY=2g
+
+WORKDIR /opt/application
+
+USER root
+#Install package dependencies
+RUN apt-get update
+RUN apt-get -y install gcc g++ libjpeg62-turbo-dev libffi-dev
+RUN pip install --upgrade pip
+
+USER 185
+#copy src files including spark jobs, requirements.txt
+COPY ./2_spark_mltrain/requirements-dev.txt /opt/application/requirements-dev.txt
+
+#Install pip dependencies
+RUN pip install -r /opt/application/requirements-dev.txt
+

@@ -13,7 +13,7 @@ Connect to kaggle and get to account part:
 
 ![kaggle_account.png](../assets/kaggle_account.png?raw=true)
 
-Get kaggle.json :
+Get kaggle.json using `Create new API Token` button :
 ![get_kaggle_json.png](../assets/get_kaggle_json.png?raw=true)
 
 Then copy it in the location ~/.kaggle/kaggle.json. You can get easy access to the directory using this method in WSL:
@@ -35,5 +35,18 @@ Retrieve the dataset and move it to the data/ directory in the repository
 Replace <path_to_repo> with the directory containing the ilis-datascience-td-spark respository
 
 ```bash
-kaggle datasets download -d paultimothymooney/chest-xray-pneumonia -p  <path_to_repo>/ilis-datascience-td-spark/data
+kaggle datasets download -d ahmedhaytham/chest-xray-images-pneumonia-with-new-class -p  <path_to_repo>/ilis-datascience-td-spark/data
+```
+
+
+Should result in following : 
+```bash
+ls data/
+chest-xray-pneumonia.zip
+```
+
+Unzip file in data/ directory
+```bash
+ls data/
+chest-xray-pneumonia.zip
 ```
