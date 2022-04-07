@@ -2,9 +2,35 @@
 TD Spark pour Master Ingénierie de la santé - Parcours datascience
 
 
+## STEP 1 - Convert Dicom files to png files using SPARK
+
+### 1.1 - Build docker container
+
+### 1.2 - Explanations 
+
+### 1.3 - Run Spark job
+
+## STEP 2 - Train DL model using BigDL and SPARK
+
+### 2.1 - Build docker container
+
+### 2.2 - Explanations 
+
+### 2.3 - Run API and test
+
+## STEP 3 - API to expose model
+
+### 3.1 - Build docker container
+
+### 3.2 - Explanations 
+
+### 3.3 - Run API and test
+
+## ANNEXE
 Retrieve the dataset containing Xrays from Kaggle:
 
-## Install kaggle API & configuration
+
+### Install kaggle API & configuration
 Follow the instructions in [https://github.com/Kaggle/kaggle-api](https://github.com/Kaggle/kaggle-api)
 
 After kaggle API installation, retrieve the kaggle.json file from your profile in kaggle :
