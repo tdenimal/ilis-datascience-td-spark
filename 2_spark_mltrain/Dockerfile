@@ -1,8 +1,9 @@
 FROM datamechanics/spark:3.2-latest
 
 ENV PYSPARK_MAJOR_PYTHON_VERSION=3
+ENV SPARK_DRIVER_MEMORY=2g
 
-WORKDIR /opt/application
+WORKDIR /opt/application/spark
 
 USER root
 #Install package dependencies
@@ -27,6 +28,13 @@ RUN pex --inherit-path=prefer --python=python3.8 -r /opt/application/requirement
 #Run spark job
 #Env variable PEX_ROOT for base directory for pex
 #PEX_INHERIT_PATH : pex inherits of current env, to get pyspark dependencies for ex.
+
+#Workaround for missing jar - dontknow why jar variables in spark-submit are not ok ?
+USER root
+RUN cp /opt/conda/lib/python3.8/site-packages/bigdl/share/dllib/lib/bigdl-dllib-spark_3.1.2-2.0.0-jar-with-dependencies.jar /opt/spark/jars
+
+
+USER 185
 CMD /opt/spark/bin/spark-submit  \
 --conf spark.executorEnv.PEX_ROOT=/tmp \
 --conf spark.yarn.appMasterEnv.PEX_ROOT=/tmp \
@@ -34,4 +42,7 @@ CMD /opt/spark/bin/spark-submit  \
 --conf spark.yarn.appMasterEnv.PEX_INHERIT_PATH=prefer \
 --conf spark.pyspark.driver.python=/tmp/py38_spark_etl.pex \
 --conf spark.pyspark.python=/tmp/py38_spark_etl.pex \
+--jars /opt/conda/lib/python3.8/site-packages/bigdl/share/dllib/lib \
+--conf spark.driver.extraClassPath=bigdl-dllib-spark_3.1.2-2.0.0-jar-with-dependencies.jar \
+--conf spark.executor.extraClassPath=bigdl-dllib-spark_3.1.2-2.0.0-jar-with-dependencies.jar \
 --files /tmp/py38_spark_etl.pex /opt/application/spark/spark_train.py

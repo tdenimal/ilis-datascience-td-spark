@@ -52,6 +52,8 @@ services:
     ports:
       - 8888:8888
     command: jupyter lab --allow-root --ip 0.0.0.0
+    #command: /bin/bash
+
   sparkml_run:
     image: sparkml_ilis_td_run
     build:
@@ -62,7 +64,6 @@ services:
       - ./2_spark_mltrain/notebooks:/opt/application/notebooks
       - ./2_spark_mltrain/spark:/opt/application/spark
       - ./data:/opt/application/data
-    command: /bin/bash 
 
 
   sparkapi_dev:
