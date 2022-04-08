@@ -28,8 +28,7 @@ from pyspark.sql.types import StringType, ArrayType
 #from bigdl.dllib.keras.layers import *
 
 #Global variables
-label_texts = ["Atelectasis", "Cardiomegaly", "Effusion", "Infiltration", "Mass", "Nodule", "Pneumonia",
-               "Pneumothorax", "Consolidation", "Edema", "Emphysema", "Fibrosis", "Pleural_Thickening", "Hernia"]
+label_texts = ["bacteria", "Normal", "virus"]
 
 label_map = {k: v for v, k in enumerate(label_texts)}
 
@@ -93,8 +92,8 @@ def evaluate_and_plot(testDF):
 if __name__== "__main__":
     #Variables
     random.seed(1234)
-    batch_size = 12 #1024 
-    num_epoch = 15
+    batch_size = 24 #1024 
+    num_epoch = 1
 
     #    model_path - Path to save the model
     #    image_path - Path to all images
@@ -102,6 +101,12 @@ if __name__== "__main__":
     image_path = "/opt/application/data/output"
     label_path = "/opt/application/data"
     model_path = "/opt/application/data/model" 
+    
+    kaggle_path = "/opt/application/data_kaggle" 
+    
+    test_path = kaggle_path + "/Test"
+    train_path = kaggle_path + "/Train"
+    val_path = kaggle_path + "/Val"
 
     # Get Spark Context
     sparkConf = create_spark_conf().setAppName("Chest X-ray Training")
@@ -117,30 +122,27 @@ if __name__== "__main__":
     print("Batch Size = " + str(batch_size))
 
 
-    #User defined function to get label & filename
-    getLabel = udf(lambda x: text_to_label(x), ArrayType(DoubleType()))
-    getName = udf(lambda row: os.path.basename(row[0]), StringType())
-    
-    #Create Dataframe containing image
-    imageDF = NNImageReader.readImages(image_path, sc, resizeH=256, resizeW=256, image_codec=1) \
-        .withColumn("Image_Index", getName(col('image')))
+    trainingDF_bacteria=NNImageReader.readImages(train_path+ "/bacteria", sc, resizeH=256, resizeW=256, image_codec=1) \
+                    .withColumn('label', array(lit(1.0), lit(0.0), lit(0.0)))
+    trainingDF_normal=NNImageReader.readImages(train_path+ "/Normal", sc, resizeH=256, resizeW=256, image_codec=1) \
+                    .withColumn('label', array(lit(0.0), lit(1.0), lit(0.0)))
+    trainingDF_virus=NNImageReader.readImages(train_path+ "/virus", sc, resizeH=256, resizeW=256, image_codec=1) \
+                    .withColumn('label', array(lit(0.0), lit(0.0), lit(1.0)))
 
-    #Create Dataframe containg labels from csv
-    labelDF = spark.read.load(label_path + "/Data_Entry_2017_v2020.csv", format="csv", sep=",", inferSchema="true", header="true") \
-        .select("Image_Index", "Finding_Labels") \
-        .withColumn("label", getLabel(col('Finding_Labels'))) 
-    
-    #Join the 2 DF
-    totalDF = imageDF.join(labelDF, on="Image_Index", how="inner")
 
-    
+    trainingDF = trainingDF_bacteria.union(trainingDF_normal).union(trainingDF_virus)
 
-    #(trainingDF, validationDF) = totalDF.randomSplit([0.8, 0.2])
-    trainingDF=totalDF
-    validationDF=totalDF
+    validationDF_bacteria=NNImageReader.readImages(val_path+ "/bacteria", sc, resizeH=256, resizeW=256, image_codec=1) \
+                        .withColumn('label', array(lit(1.0), lit(0.0), lit(0.0)))
+    validationDF_normal=NNImageReader.readImages(val_path+ "/Normal", sc, resizeH=256, resizeW=256, image_codec=1) \
+                    .withColumn('label', array(lit(0.0), lit(1.0), lit(0.0)))
+    validationDF_virus=NNImageReader.readImages(val_path+ "/virus", sc, resizeH=256, resizeW=256, image_codec=1) \
+                    .withColumn('label', array(lit(0.0), lit(0.0), lit(1.0)))
+
+    validationDF = validationDF_bacteria.union(validationDF_normal).union(validationDF_virus)
+
     print("Number of training images: ", trainingDF.count())
     print("Number of validation images: ", validationDF.count())
-    
     
     # Load the pretrained model
     xray_model = build_model(label_length)

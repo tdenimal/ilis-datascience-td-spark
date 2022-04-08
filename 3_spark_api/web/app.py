@@ -41,7 +41,7 @@ st.sidebar.markdown("""
 
 #MAIN CONTENT
 #variable paths
-images_path = '../data/output/'
+images_path = '../data_kaggle/Test/'
 
 #Selectbox for test images
 test_images = os.listdir(images_path)

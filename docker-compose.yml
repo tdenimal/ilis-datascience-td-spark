@@ -49,6 +49,7 @@ services:
       - ./2_spark_mltrain/notebooks:/opt/application/notebooks
       - ./2_spark_mltrain/spark:/opt/application/spark
       - ./data:/opt/application/data
+      - ./data_kaggle:/opt/application/data_kaggle
     ports:
       - 8888:8888
     command: jupyter lab --allow-root --ip 0.0.0.0
@@ -64,7 +65,7 @@ services:
       - ./2_spark_mltrain/notebooks:/opt/application/notebooks
       - ./2_spark_mltrain/spark:/opt/application/spark
       - ./data:/opt/application/data
-
+      - ./data_kaggle:/opt/application/data_kaggle
 
   sparkapi_dev:
     image: sparkapi_ilis_td_dev
