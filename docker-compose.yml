@@ -79,6 +79,7 @@ services:
       - ./3_spark_api/web:/opt/application/web
       - ./3_spark_api/notebooks:/opt/application/notebooks
       - ./data:/opt/application/data
+      - ./data_kaggle:/opt/application/data_kaggle
     ports:
       - 8888:8888
     command: /bin/bash
@@ -91,6 +92,7 @@ services:
       - ~/.config:/root/.config
       - ./3_spark_api/web:/opt/application/web
       - ./data:/opt/application/data
+      - ./data_kaggle:/opt/application/data_kaggle
     command: streamlit run app.py --server.port 8080 --server.address 0.0.0.0
     ports:
       - 8080:8080

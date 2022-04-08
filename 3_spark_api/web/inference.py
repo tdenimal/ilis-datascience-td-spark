@@ -23,8 +23,11 @@ import time
 import matplotlib.image as mpimg
 
 #Global variables
-label_texts = ["Atelectasis", "Cardiomegaly", "Effusion", "Infiltration", "Mass", "Nodule", "Pneumonia",
-               "Pneumothorax", "Consolidation", "Edema", "Emphysema", "Fibrosis", "Pleural_Thickening", "Hernia"]
+#label_texts = ["Atelectasis", "Cardiomegaly", "Effusion", "Infiltration", "Mass", "Nodule", "Pneumonia",
+ #              "Pneumothorax", "Consolidation", "Edema", "Emphysema", "Fibrosis", "Pleural_Thickening", "Hernia"]
+
+
+label_texts = ["bacteria", "Normal", "virus"]
 
 label_map = {k: v for v, k in enumerate(label_texts)}
 
@@ -71,6 +74,13 @@ def img_inference(image_path):
     model_path = "/opt/application/data/model" + "/xray_model_classif.bigdl"
     bin_path = "/opt/application/data/model" + "/xray_model_classif.bin"
     label_path = "/opt/application/data" + "/Data_Entry_2017_v2020.csv"
+    
+    
+    kaggle_path = "/opt/application/data_kaggle" 
+    
+    test_path = kaggle_path + "/Test"
+    train_path = kaggle_path + "/Train"
+    val_path = kaggle_path + "/Val"
     
     # Get Spark Content
     sparkConf = create_spark_conf().setAppName("ChestXray_Inference")
