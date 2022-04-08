@@ -25,6 +25,7 @@ from bigdl.dllib.net.net_load import Net
 from bigdl.dllib.nnframes import NNEstimator, NNImageReader
 from bigdl.dllib.keras.objectives import BinaryCrossEntropy
 from pyspark.sql.types import StringType, ArrayType
+from pyspark.sql.functions import lit,array
 #from bigdl.dllib.keras.layers import *
 
 #Global variables
